@@ -55,6 +55,10 @@
   "engines": {
     "node": ">=20"
   },
+  "devDependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
   "scripts": {
     "test": "node test/logic.test.mjs && node test/runtime.test.mjs && node test/render.test.mjs && node test/copy.test.mjs && node test/robustness.test.mjs"
   }

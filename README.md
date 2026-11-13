@@ -10,6 +10,8 @@ DeepSeek Harness（DSH）Web 插件：按 **模型 + 日历规则 + 时段** 判
 
 插件是一个标准 DSH bundle 包：`package.json` 声明 `dsh.bundle.patch`，`cordis.patch.yml` 插入一行 `dsh-offpeak-sender`，Client 半（`client.js`）在 Web 页面里注册 UI，Host 半（`index.js`）是空 `apply`。没有构建步骤，也没有原生依赖。
 
+> 若此前用本地 `link:` 安装过同一插件（包名可能显示为 `@local/offpeak-sender`），请先卸载旧包再装本包：两个实例会先后包装 Composer 的 `sendSession`，后激活者覆盖前者，容易出现重复弹窗或队列行为异常。
+
 ### 方式 A：插件管理器（推荐）
 
 在 DSH Web 里打开 **设置 → 插件**（Plugin Manager），选择安装 bundle，target 填：
@@ -154,14 +156,17 @@ dsh plugin --profile web remove dsh-offpeak-sender
 ## 开发
 
 ```powershell
-node test/logic.test.mjs     # 日历、调休、跨零点、时段、序列化
-node test/runtime.test.mjs   # 拦截、三种选择、队列发送、重试上限、卸载恢复
-node test/render.test.mjs    # 用 React 渲染设置页 / 队列条 / 弹窗
-node test/copy.test.mjs      # 中英文案完整性与 manifest
+npm install                  # 只有 render 测试需要 React（devDependency）
+npm test                     # 一次跑完 61 项离线检查
+
+node test/logic.test.mjs      # 日历、调休、跨零点、时段、序列化
+node test/runtime.test.mjs    # 拦截、三种选择、队列发送、重试上限、卸载恢复
+node test/render.test.mjs     # 用真实 React 渲染设置页 / 队列条 / 弹窗
+node test/copy.test.mjs       # 中英文案完整性与 manifest
 node test/robustness.test.mjs # 激活路径健壮性（含 6 项失败隔离）
 ```
 
-或 `npm test` 一次跑完。全部为离线检查，不需要启动 DSH、不联网。
+全部为离线检查，不需要启动 DSH、不联网。`render.test.mjs` 从本包的 `node_modules` 解析 React；没有安装时可用 `DSH_REACT_DIR=<含 react 的目录>` 指定，两样都没有会打印 `SKIP` 跳过（CI 里装了 devDependencies，因此不会跳过）。
 
 ## 许可
 

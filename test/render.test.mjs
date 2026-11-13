@@ -7,10 +7,39 @@ import assert from 'node:assert/strict';
 const here = fileURLToPath(new URL('.', import.meta.url));
 const source = readFileSync(here + '../client.js', 'utf8');
 
-// A real React runtime (React 19 ships with another local project) renders the
-// plugin components to static markup, so an undefined prop, a bad element
-// shape, or a hook-order mistake fails here instead of leaving a blank slot.
-const externalRequire = createRequire('D:/myWorkfolder/DocStageIntro/node_modules/');
+// A real React runtime renders the plugin components to static markup, so an
+// undefined prop, a bad element shape, or a hook-order mistake fails here
+// instead of leaving a blank slot.
+//
+// React is resolved portably: this package's own node_modules (it is a
+// devDependency, so `npm install` provides it), otherwise a directory named by
+// DSH_REACT_DIR. Without either, the render checks are skipped with a loud
+// notice rather than crashing on a machine-specific path.
+const externalRequire = (() => {
+  const candidates = [createRequire(import.meta.url)];
+  const explicit = process.env.DSH_REACT_DIR;
+  if (explicit) {
+    const base = /[\\/]$/.test(explicit) ? explicit : explicit + '/';
+    candidates.push(createRequire(base));
+  }
+  for (const req of candidates) {
+    try {
+      req.resolve('react');
+      req.resolve('react-dom');
+      req.resolve('react-dom/server');
+      return req;
+    } catch (error) {
+      // try the next candidate
+    }
+  }
+  return null;
+})();
+
+if (externalRequire === null) {
+  console.log('SKIP  render checks need React: run `npm install` (devDependency) or set DSH_REACT_DIR=<dir containing node_modules with react>.');
+  process.exit(0);
+}
+
 const React = externalRequire('react');
 const ReactDOMServer = externalRequire('react-dom/server');
 const ReactDOM = externalRequire('react-dom');

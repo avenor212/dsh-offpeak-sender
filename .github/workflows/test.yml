@@ -13,10 +13,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Install dev dependencies (React, for the render checks)
+        run: npm install --no-audit --no-fund
       - name: Offline checks (no DSH, no network)
         run: |
+          set -euo pipefail
           node test/logic.test.mjs
           node test/runtime.test.mjs
-          node test/render.test.mjs
+          node test/render.test.mjs | tee render.log
+          grep -q 'render checks passed' render.log
           node test/copy.test.mjs
           node test/robustness.test.mjs
