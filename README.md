@@ -1,10 +1,10 @@
 # 错峰发送 · dsh-offpeak-sender
 
+[![test](https://github.com/qwq20002/dsh-offpeak-sender/actions/workflows/test.yml/badge.svg)](https://github.com/qwq20002/dsh-offpeak-sender/actions/workflows/test.yml)
+
 DeepSeek Harness（DSH）Web 插件：按 **模型 + 日历规则 + 时段** 判断「现在是否峰价」，在峰价时段拦截输入框的发送动作，弹窗让你决定 **算了 / 现在做 / 等等再做**。选「等等再做」的消息进入该会话独有的队列，谷价开始后自动发出。
 
 所有判断只使用本机时钟与本地节假日表，不发起任何模型请求，也不经过 Agent API。
-
-![DSH Web 插件](icon.svg)
 
 ## 安装
 
