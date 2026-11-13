@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Off-peak send",
+    "description": "Holds composer messages during peak pricing and sends them once the off-peak window starts."
+  }
+}

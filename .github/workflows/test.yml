@@ -1,0 +1,22 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  offline-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Offline checks (no DSH, no network)
+        run: |
+          node test/logic.test.mjs
+          node test/runtime.test.mjs
+          node test/render.test.mjs
+          node test/copy.test.mjs
+          node test/robustness.test.mjs

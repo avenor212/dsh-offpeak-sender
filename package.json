@@ -1,0 +1,61 @@
+{
+  "name": "dsh-offpeak-sender",
+  "version": "1.0.0",
+  "description": "Peak-hour send guard for DeepSeek Harness: holds composer messages during peak pricing and sends them once the off-peak window starts.",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "peak-hours",
+    "off-peak",
+    "composer",
+    "send-queue"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qwq20002/dsh-offpeak-sender.git"
+  },
+  "homepage": "https://github.com/qwq20002/dsh-offpeak-sender#readme",
+  "bugs": {
+    "url": "https://github.com/qwq20002/dsh-offpeak-sender/issues"
+  },
+  "author": "qwq20002",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/logic.test.mjs && node test/runtime.test.mjs && node test/render.test.mjs && node test/copy.test.mjs && node test/robustness.test.mjs"
+  }
+}

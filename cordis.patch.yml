@@ -1,0 +1,12 @@
+# dsh-offpeak-sender bundle patch
+#
+# 往配置树里插入一行 entry：
+#   id:   这行的唯一标识（也是本插件的插件行 id）
+#   name: 'dsh-offpeak-sender' 解析到本包入口 index.js（Host 半，空 apply）
+#
+# 峰价判断、拦截、排队、发送全部在 Client 半（client.js）完成，
+# Host 侧只需要一个可挂载的行，不需要任何配置项。
+
+- insert:
+    - id: dsh-offpeak-sender
+      name: 'dsh-offpeak-sender'
