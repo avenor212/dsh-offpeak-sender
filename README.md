@@ -65,6 +65,16 @@ dsh plugin --profile web remove dsh-offpeak-sender
 - 插件列表里该条目的标题 / 描述 / 图标来自本包的 `locale/*.json` 与 `icon.svg`；
 - 设置页顶部「运行状态」为绿点，表示发送拦截器已挂上。
 
+## 界面
+
+| 峰价时段发送前先询问 | 选「等等再做」进入队列 |
+| --- | --- |
+| ![峰价弹窗](docs/screenshots/peak-dialog.png) | ![错峰队列](docs/screenshots/queue-dock.png) |
+
+![规则设置：模型 + 日历 + 时段，此刻是否峰价一目了然](docs/screenshots/settings-peak.png)
+
+20 秒宣传片（实机画面 + BGM）：[docs/promo.mp4](docs/promo.mp4)
+
 ## 峰价怎么算
 
 一条规则 = 供应商 + 模型名称 + 日历规则 + 一组时段。发送时命中峰价需要同时满足：
